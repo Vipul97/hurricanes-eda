@@ -147,8 +147,7 @@ plot(
   Cat4.freqs,
   main = 'Poisson Distribution Over Category 4 Hurricane Frequencies',
   xlab = 'Hurricane Frequency in a Decade',
-  ylab = 'Count of Decades',
-  ylim = c(0, 10)
+  ylab = 'Count of Decades'
 )
 lines(0:Cat4.max_freq,
       dpois(0:Cat4.max_freq, Cat4.lambda) * sum(Cat4.freqs),
