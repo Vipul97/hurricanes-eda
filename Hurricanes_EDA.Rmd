@@ -117,6 +117,7 @@ barplot(
 grid()
 ```
 
+
 ```{r}
 barplot(
   Cat5.freqs,
@@ -204,15 +205,18 @@ AMO.month
 
 # Remove Outlier Values
 ```{r, results='hide'}
-AMO.month = AMO.month[c(-146:-152),]
+AMO.month = AMO.month[c(-146:-152), ]
 AMO.month
 ```
 
 # Plot AMO Index (Yearly Mean)
 ```{r}
-AMO.month.means = rowMeans(AMO.month[,-1])
+AMO.month.means = rowMeans(AMO.month[, -1])
 AMO.month.means.ts = ts(AMO.month.means, frequency = 1, start = 1870)
-plot(AMO.month.means.ts, main = 'AMO Index (Yearly Mean)', xlab='Year', ylab='Temperature Anomaly')
-abline(h=0, lwd=2)
+plot(AMO.month.means.ts,
+     main = 'AMO Index (Yearly Mean)',
+     xlab = 'Year',
+     ylab = 'Temperature Anomaly')
+abline(h = 0, lwd = 2)
 grid()
 ```

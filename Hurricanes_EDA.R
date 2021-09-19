@@ -139,12 +139,15 @@ AMO.month <- read.csv('datasets/amo_by_month.csv')
 AMO.month
 
 # Remove Outlier Values
-AMO.month = AMO.month[c(-146:-152),]
+AMO.month = AMO.month[c(-146:-152), ]
 AMO.month
 
 # Plot AMO Index (Yearly Mean)
-AMO.month.means = rowMeans(AMO.month[,-1])
+AMO.month.means = rowMeans(AMO.month[, -1])
 AMO.month.means.ts = ts(AMO.month.means, frequency = 1, start = 1870)
-plot(AMO.month.means.ts, main = 'AMO Index (Yearly Mean)', xlab='Year', ylab='Temperature Anomaly')
-abline(h=0, lwd=2)
+plot(AMO.month.means.ts,
+     main = 'AMO Index (Yearly Mean)',
+     xlab = 'Year',
+     ylab = 'Temperature Anomaly')
+abline(h = 0, lwd = 2)
 grid()
