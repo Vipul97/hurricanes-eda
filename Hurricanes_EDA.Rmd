@@ -12,7 +12,7 @@ https://climatedataguide.ucar.edu/sites/default/files/amo_monthly.10yrLP.txt
 https://en.wikipedia.org/wiki/List_of_Category_4_Atlantic_hurricanes  
 (Manually generated CSV file from the tables)  
 
-**category4_atlantic_by_year**:  
+**category4_atlantic_by_year.csv**:  
 https://en.wikipedia.org/wiki/List_of_Category_4_Atlantic_hurricanes  
 (Manually generated CSV file from the tables)  
 
@@ -20,7 +20,7 @@ https://en.wikipedia.org/wiki/List_of_Category_4_Atlantic_hurricanes
 https://en.wikipedia.org/wiki/List_of_Category_5_Atlantic_hurricanes  
 (Manually generated CSV file from the tables)  
 
-**category5_atlantic_by_year**:  
+**category5_atlantic_by_year.csv**:  
 https://en.wikipedia.org/wiki/List_of_Category_5_Atlantic_hurricanes  
 (Manually generated CSV file from the tables)  
 
