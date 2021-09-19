@@ -1,8 +1,40 @@
+---
+title: "Hurricanes EDA"
+output: pdf_document
+---
+
+# Data Sources
+**amo_by_month.csv**:  
+https://climatedataguide.ucar.edu/sites/default/files/amo_monthly.10yrLP.txt  
+(Manually generated CSV file from the textual data)  
+
+**category4_atlantic_by_decade.csv**:  
+https://en.wikipedia.org/wiki/List_of_Category_4_Atlantic_hurricanes  
+(Manually generated CSV file from the tables)  
+
+**category4_atlantic_by_year**:  
+https://en.wikipedia.org/wiki/List_of_Category_4_Atlantic_hurricanes  
+(Manually generated CSV file from the tables)  
+
+**category5_atlantic_by_decade.csv**:  
+https://en.wikipedia.org/wiki/List_of_Category_5_Atlantic_hurricanes  
+(Manually generated CSV file from the tables)  
+
+**category5_atlantic_by_year**:  
+https://en.wikipedia.org/wiki/List_of_Category_5_Atlantic_hurricanes  
+(Manually generated CSV file from the tables)  
+
+**tropical_storm_data**:  
+
 # Plot Bar Plots of Hurricanes by Decade
+## Category 4 Hurricanes
+```{r}
 Cat4.Atlantic.decade <-
   read.csv('datasets/category4_atlantic_by_decade.csv')
 Cat4.Atlantic.decade
+```
 
+```{r}
 barplot(
   Cat4.Atlantic.decade$frequency,
   names.arg = Cat4.Atlantic.decade$decade,
@@ -12,11 +44,16 @@ barplot(
   las = 2
 )
 grid()
+```
 
+## Category 5 Hurricanes
+```{r}
 Cat5.Atlantic.decade <-
   read.csv('datasets/category5_atlantic_by_decade.csv')
 Cat5.Atlantic.decade
+```
 
+```{r}
 barplot(
   Cat5.Atlantic.decade$frequency,
   names.arg = Cat5.Atlantic.decade$decade,
@@ -26,39 +63,49 @@ barplot(
   las = 2
 )
 grid()
+```
 
 # Calculate the Highest Frequency of Hurricanes Over the Decades
+```{r}
 Cat4.max_freq = max(Cat4.Atlantic.decade$frequency)
 Cat4.max_freq
-
+```
+```{r}
 Cat5.max_freq = max(Cat5.Atlantic.decade$frequency)
 Cat5.max_freq
+```
 
 # Calculate Number of Decades
+```{r}
 num_decades = length(Cat4.Atlantic.decade$decade)
 num_decades
+```
 
 # Function to Count the Number of Decades Having the Same Hurricane Frequencies
-# Example: Number of Decades where there was 1 occurrence of Category 4
-#          Hurricane is 2,
-#          Number of Decades where there were 2 occurrences of Category 4
-#          Hurricanes is 3, etc.
+Example: Number of Decades where there was 1 occurrence of Category 4 Hurricane is 2,  
+Number of Decades where there were 2 occurrences of Category 4 Hurricanes is 3, etc.
+```{r}
 get_freqs <- function(Cat, freqs_list) {
   for (i in Cat$frequency) {
     freqs_list[i + 1] = freqs_list[i + 1] + 1
   }
   return(freqs_list)
 }
+```
 
+```{r}
 Cat4.freqs =  c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
 Cat4.freqs = get_freqs(Cat4.Atlantic.decade, Cat4.freqs)
 Cat4.freqs
-
+```
+```{r}
 Cat5.freqs =  c(0, 0, 0, 0, 0, 0, 0, 0, 0)
 Cat5.freqs = get_freqs(Cat5.Atlantic.decade, Cat5.freqs)
 Cat5.freqs
+```
 
 # Plot Number of Hurricanes in a Decade
+```{r}
 barplot(
   Cat4.freqs,
   names.arg = 0:Cat4.max_freq,
@@ -68,7 +115,9 @@ barplot(
   las = 2
 )
 grid()
+```
 
+```{r}
 barplot(
   Cat5.freqs,
   names.arg = 0:Cat5.max_freq,
@@ -78,15 +127,21 @@ barplot(
   las = 2
 )
 grid()
+```
 
 # Calculate lambda Value for Poisson Distribution
+```{r}
 Cat4.lambda = mean(Cat4.Atlantic.decade$frequency)
 Cat4.lambda
+```
 
+```{r}
 Cat5.lambda = mean(Cat5.Atlantic.decade$frequency)
 Cat5.lambda
+```
 
 # Plot Poisson Distribution Over Hurricane Frequencies
+```{r}
 plot(
   0:Cat4.max_freq,
   Cat4.freqs,
@@ -99,8 +154,9 @@ lines(0:Cat4.max_freq,
       dpois(0:Cat4.max_freq, Cat4.lambda) * sum(Cat4.freqs),
       lwd = 2)
 grid()
+```
 
-Cat5.freqs
+```{r}
 plot(
   0:Cat5.max_freq,
   Cat5.freqs,
@@ -112,8 +168,10 @@ lines(0:Cat5.max_freq,
       dpois(0:Cat5.max_freq, Cat5.lambda) * sum(Cat5.freqs),
       lwd = 2)
 grid()
+```
 
 # Plot Q-Q Plots
+```{r}
 qqplot(
   dpois(0:Cat4.max_freq, Cat4.lambda) * sum(Cat4.freqs),
   Cat4.freqs,
@@ -124,7 +182,9 @@ qqplot(
   ylim = c(0, 4)
 )
 abline(0, 1)
+```
 
+```{r}
 qqplot(
   dpois(0:Cat5.max_freq, Cat5.lambda) * sum(Cat5.freqs),
   Cat5.freqs,
@@ -135,18 +195,25 @@ qqplot(
   ylim = c(0, 4)
 )
 abline(0, 1)
+```
 
 # Read Monthly Atlantic Multidecadal Oscillation Index CSV File
+```{r, results='hide'}
 AMO.month <- read.csv('datasets/amo_by_month.csv')
 AMO.month
+```
 
 # Remove Outlier Values
+```{r, results='hide'}
 AMO.month = AMO.month[c(-146:-152),]
 AMO.month
+```
 
 # Plot AMO Index (Yearly Mean)
+```{r}
 AMO.month.means = rowMeans(AMO.month[,-1])
 AMO.month.means.ts = ts(AMO.month.means, frequency = 1, start = 1870)
 plot(AMO.month.means.ts, main = 'AMO Index (Yearly Mean)', xlab='Year', ylab='Temperature Anomaly')
 abline(h=0, lwd=2)
 grid()
+```
