@@ -288,13 +288,13 @@ for (i in as.data.frame(table(TS$Year))$Freq) {
 TS.freqs
 ```
 
-\newpage
-
 # Calculate lambda Value for Poisson Distribution
 ```{r}
 TS.lambda = mean(as.data.frame(table(TS$Year))$Freq)
 TS.lambda
 ```
+
+\newpage
 
 # Plot Poisson Distribution Over Tropical Storm Frequencies
 ```{r}
