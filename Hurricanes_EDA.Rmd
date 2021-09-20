@@ -278,7 +278,7 @@ TS.max_freq
 
 # Count the Number of Years Having the Same Tropical Storm Frequencies
 Example: Number of Years where there were 3 occurrences of Tropical Storm is 1,  
-Number of Years where there were 4 occurrences of Tropical Storm is 4, etc.
+Number of Years where there were 4 occurrences of Tropical Storm is 2, etc.
 ```{r}
 TS.freqs = vector(mode = 'integer', length = max(as.data.frame(table(TS$Year))$Freq) + 1)
 for (i in as.data.frame(table(TS$Year))$Freq) {
