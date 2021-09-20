@@ -288,6 +288,21 @@ for (i in as.data.frame(table(TS$Year))$Freq) {
 TS.freqs
 ```
 
+\newpage
+
+# Plot Number of Tropical Storms in a Year
+```{r}
+barplot(
+  TS.freqs,
+  names.arg = 0:TS.max_freq,
+  main = 'Tropical Storms by Year',
+  xlab = 'Number of Tropical Storms in a Year',
+  ylab = 'Frequency',
+  las = 2
+)
+grid()
+```
+
 # Calculate lambda Value for Poisson Distribution
 ```{r}
 TS.lambda = mean(as.data.frame(table(TS$Year))$Freq)
