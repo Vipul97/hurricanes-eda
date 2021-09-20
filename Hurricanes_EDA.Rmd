@@ -4,10 +4,12 @@ output: pdf_document
 ---
 
 # Team Members
-## Vipul Gharde                - vig4
-## Animesh Sharma              - as3592
-## Pavankumar Prakash Savanur  - ps1149
-## Nikhil Panikulangara        - npp88
+Vipul Gharde                - vig4  
+Animesh Sharma              - as3592  
+Pavankumar Prakash Savanur  - ps1149  
+Nikhil Panikulangara        - npp88
+
+---
 
 # Data Sources
 **amo_by_month.csv**:  
@@ -30,9 +32,13 @@ https://en.wikipedia.org/wiki/List_of_Category_5_Atlantic_hurricanes
 https://en.wikipedia.org/wiki/List_of_Category_5_Atlantic_hurricanes  
 (Manually generated CSV file from the tables)  
 
-**tropical_storm_data.csv**:
-https://www.nhc.noaa.gov/TCR_StormReportsIndex.xml
-(Converted from XML to CSV anf used below)
+**tropical_storm_data.csv**:  
+https://www.nhc.noaa.gov/TCR_StormReportsIndex.xml  
+(Converted XML to CSV File)
+
+---
+
+\newpage
 
 # Plot Bar Plots of Hurricanes by Decade
 ## Category 4 Hurricanes
@@ -41,6 +47,8 @@ Cat4.Atlantic.decade <-
   read.csv('datasets/category4_atlantic_by_decade.csv')
 Cat4.Atlantic.decade
 ```
+
+\newpage
 
 ```{r}
 barplot(
@@ -53,6 +61,7 @@ barplot(
 )
 grid()
 ```
+\newpage
 
 ## Category 5 Hurricanes
 ```{r}
@@ -60,6 +69,8 @@ Cat5.Atlantic.decade <-
   read.csv('datasets/category5_atlantic_by_decade.csv')
 Cat5.Atlantic.decade
 ```
+
+\newpage
 
 ```{r}
 barplot(
@@ -93,24 +104,26 @@ num_decades
 Example: Number of Decades where there was 1 occurrence of Category 4 Hurricane is 2,  
 Number of Decades where there were 2 occurrences of Category 4 Hurricanes is 3, etc.
 ```{r}
-get_freqs <- function(Cat, freqs_list) {
+get_freqs <- function(Cat) {
+  freqs = vector(mode = 'integer', length = max(Cat$frequency) + 1)
+  
   for (i in Cat$frequency) {
-    freqs_list[i + 1] = freqs_list[i + 1] + 1
+    freqs[i + 1] = freqs[i + 1] + 1
   }
-  return(freqs_list)
+  return(freqs)
 }
 ```
 
 ```{r}
-Cat4.freqs =  c(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
-Cat4.freqs = get_freqs(Cat4.Atlantic.decade, Cat4.freqs)
+Cat4.freqs = get_freqs(Cat4.Atlantic.decade)
 Cat4.freqs
 ```
 ```{r}
-Cat5.freqs =  c(0, 0, 0, 0, 0, 0, 0, 0, 0)
-Cat5.freqs = get_freqs(Cat5.Atlantic.decade, Cat5.freqs)
+Cat5.freqs = get_freqs(Cat5.Atlantic.decade)
 Cat5.freqs
 ```
+
+\newpage
 
 # Plot Number of Hurricanes in a Decade
 ```{r}
@@ -125,6 +138,7 @@ barplot(
 grid()
 ```
 
+\newpage
 
 ```{r}
 barplot(
@@ -149,6 +163,8 @@ Cat5.lambda = mean(Cat5.Atlantic.decade$frequency)
 Cat5.lambda
 ```
 
+\newpage
+
 # Plot Poisson Distribution Over Hurricane Frequencies
 ```{r}
 plot(
@@ -163,6 +179,7 @@ lines(0:Cat4.max_freq,
       lwd = 2)
 grid()
 ```
+\newpage
 
 ```{r}
 plot(
@@ -177,6 +194,7 @@ lines(0:Cat5.max_freq,
       lwd = 2)
 grid()
 ```
+\newpage
 
 # Plot Q-Q Plots
 ```{r}
@@ -192,6 +210,8 @@ qqplot(
 abline(0, 1)
 ```
 
+\newpage
+
 ```{r}
 qqplot(
   dpois(0:Cat5.max_freq, Cat5.lambda) * sum(Cat5.freqs),
@@ -204,6 +224,7 @@ qqplot(
 )
 abline(0, 1)
 ```
+\newpage
 
 # Read Monthly Atlantic Multidecadal Oscillation Index CSV File
 ```{r, results='hide'}
@@ -228,24 +249,20 @@ plot(AMO.month.means.ts,
 abline(h = 0, lwd = 2)
 grid()
 ```
+\newpage
 
-# Read Annual Tropical Storm Data from 1958 - 2021, extract years and corresponding number of tropical storms 
-```{r}
-tropical_storm_data <- read.csv('datasets/tropical_storm_data.csv')
-years = unique(tropical_storm_data[["Year"]])
-freq = c()
-for(year in years) {
-  freq <- append(freq, nrow(subset(tropical_storm_data, Year == year)))
-}
-max_freq = max(freq)
+# Read Annual Tropical Storm Data from 1958 - 2021
+```{r, results='hide'}
+TS <- read.csv('datasets/tropical_storm_data.csv')
+TS
 ```
 
-# Plot a barplot with Year on X-Axis and Storm Frequency on Y-Axis
+# Plot a Bar Plot with Year on x-axis and Storm Frequency on y-axis
 ```{r}
 barplot(
-  freq,
-  names.arg = years,
-  main = 'All Tropical Storms by Year (Pacific & Atlantic)',
+  as.data.frame(table(TS$Year))$Freq,
+  names.arg = unique(TS$Year),
+  main = 'Tropical Storms by Year (Pacific & Atlantic)',
   xlab = 'Year',
   ylab = 'Frequency',
   las = 2
@@ -253,38 +270,60 @@ barplot(
 grid()
 ```
 
-# Calculate lambda Value for Poisson Distribution
+# Calculate the Highest Frequency of Tropical Storms Over the Years
 ```{r}
-lambda = mean(freq)
-lambda
+TS.max_freq = max(as.data.frame(table(TS$Year))$Freq)
+TS.max_freq
 ```
 
-# Plot Poisson Distribution over Tropical Storm Frequencies
+# Count the Number of Years Having the Same Tropical Storm Frequencies
+Example: Number of Years where there were 3 occurrences of Tropical Storm is 1,  
+Number of Years where there were 4 occurrences of Tropical Storm is 4, etc.
+```{r}
+TS.freqs = vector(mode = 'integer', length = max(as.data.frame(table(TS$Year))$Freq) + 1)
+for (i in as.data.frame(table(TS$Year))$Freq) {
+  TS.freqs[i + 1] = TS.freqs[i + 1] + 1
+}
+
+TS.freqs
+```
+
+\newpage
+
+# Calculate lambda Value for Poisson Distribution
+```{r}
+TS.lambda = mean(as.data.frame(table(TS$Year))$Freq)
+TS.lambda
+```
+
+# Plot Poisson Distribution Over Tropical Storm Frequencies
 ```{r}
 plot(
-  0:max(max_freq, length(freq) - 1),
-  freq,
-  main = 'Poisson Distribution over all Tropical Storm (Pacific & Atlantic) Frequencies',
-  xlab = 'Tropical Storm Frequency in a year',
+  0:TS.max_freq,
+  TS.freqs,
+  main = 'Poisson Distribution over Tropical Storm (Pacific & Atlantic) Frequencies',
+  xlab = 'Tropical Storm Frequency in a Year',
   ylab = 'Count of Years',
-  ylim = c(0,125)
+  ylim = c(0, 6)
 )
-lines(0:max(max_freq, length(freq) - 1),
-      dpois(0:max(max_freq, length(freq) - 1), lambda) * sum(freq),
+lines(0:TS.max_freq,
+      dpois(0:TS.max_freq, TS.lambda) * sum(TS.freqs),
       lwd = 2)
 grid()
 ```
+\newpage
 
 # Plot the Q-Q Plot
 ```{r}
 qqplot(
-  dpois(0:max(max_freq, length(freq) - 1), lambda) * sum(freq),
-  freq,
-  main = 'Poisson Q-Q Plot for all Tropical Storms (Pacific & Atlantic)',
+  dpois(0:TS.max_freq, TS.lambda) * sum(TS.freqs),
+  TS.freqs,
+  main = 'Poisson Q-Q Plot for Tropical Storms (Pacific & Atlantic)',
   xlab = 'Theoretical Quantiles',
   ylab = 'Sample Quantiles'
 )
 abline(0, 1)
 ```
 
-## The Tropical Storm dataset contains data for Tropical Depressions, Tropical Storms and Hurricanes for both East Pacific and Atlantic Oceans. As such, Troipical Storms as a whole are not as rare as Hurricanes. Therefore, the Q-Q Plot for the Poisson Distribution of the data doesn't properly fit, unlike the isolated Hurricane datasets.
+# Conclusion
+The Tropical Storm dataset contains data for Tropical Depressions, Tropical Storms and Hurricanes for both East Pacific and Atlantic Oceans. As such, Tropical Storms as a whole are not as rare as Hurricanes. Therefore, the Q-Q Plot for the Poisson Distribution of the data doesn't properly fit, unlike the isolated Hurricane datasets.
