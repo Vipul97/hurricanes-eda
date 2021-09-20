@@ -165,17 +165,18 @@ Cat5.lambda
 
 \newpage
 
-# Plot Poisson Distribution Over Hurricane Frequencies
+# Plot Poisson Distribution Over Hurricane Relative Frequencies
 ```{r}
 plot(
   0:Cat4.max_freq,
-  Cat4.freqs,
-  main = 'Poisson Distribution Over Category 4 Hurricane Frequencies',
+  Cat4.freqs / sum(Cat4.freqs),
+  main = 'Poisson Distribution Over Category 4 Hurricane Relative Frequencies',
   xlab = 'Hurricane Frequency in a Decade',
-  ylab = 'Count of Decades'
+  ylab = 'Density',
+  cex.main = 0.9
 )
 lines(0:Cat4.max_freq,
-      dpois(0:Cat4.max_freq, Cat4.lambda) * sum(Cat4.freqs),
+      dpois(0:Cat4.max_freq, Cat4.lambda),
       lwd = 2)
 grid()
 ```
@@ -184,13 +185,14 @@ grid()
 ```{r}
 plot(
   0:Cat5.max_freq,
-  Cat5.freqs,
-  main = 'Poisson Distribution Over Category 5 Hurricane Frequencies',
+  Cat5.freqs / sum(Cat5.freqs),
+  main = 'Poisson Distribution Over Category 5 Hurricane Relative Frequencies',
   xlab = 'Hurricane Frequency in a Decade',
-  ylab = 'Count of Decades'
+  ylab = 'Density',
+  cex.main = 0.9
 )
 lines(0:Cat5.max_freq,
-      dpois(0:Cat5.max_freq, Cat5.lambda) * sum(Cat5.freqs),
+      dpois(0:Cat5.max_freq, Cat5.lambda),
       lwd = 2)
 grid()
 ```
@@ -311,18 +313,19 @@ TS.lambda
 
 \newpage
 
-# Plot Poisson Distribution Over Tropical Storm Frequencies
+# Plot Poisson Distribution Over Tropical Storm Relative Frequencies
 ```{r}
 plot(
   0:TS.max_freq,
-  TS.freqs,
-  main = 'Poisson Distribution over Tropical Storm (Pacific & Atlantic) Frequencies',
+  TS.freqs / sum(TS.freqs),
+  main = 'Poisson Distribution over Tropical Storm (Pacific & Atlantic) Relative Frequencies',
   xlab = 'Tropical Storm Frequency in a Year',
-  ylab = 'Count of Years',
-  ylim = c(0, 6)
+  ylab = 'Density',
+  ylim = c(0, 0.1),
+  cex.main = 0.9
 )
 lines(0:TS.max_freq,
-      dpois(0:TS.max_freq, TS.lambda) * sum(TS.freqs),
+      dpois(0:TS.max_freq, TS.lambda),
       lwd = 2)
 grid()
 ```
@@ -335,7 +338,9 @@ qqplot(
   TS.freqs,
   main = 'Poisson Q-Q Plot for Tropical Storms (Pacific & Atlantic)',
   xlab = 'Theoretical Quantiles',
-  ylab = 'Sample Quantiles'
+  ylab = 'Sample Quantiles',
+  xlim = c(0, 6),
+  ylim = c(0, 6)
 )
 abline(0, 1)
 ```
